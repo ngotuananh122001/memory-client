@@ -5,9 +5,11 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
 import App from "./App";
-import reducers from "./reducer";
+import reducers from "./reducers";
 // Setup store
-const store = createStore(reducers, compose(applyMiddleware(thunk)));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
 // Render UI
 ReactDOM.render(
