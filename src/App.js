@@ -11,10 +11,11 @@ const App = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    // fetch all posts from server
     useEffect(() => {
-        dispatch(getPosts);
+        dispatch(getPosts());
     }, [dispatch]);
-    
+
     return (
         <Container maxWidth="lg">
             <AppBar
