@@ -1,10 +1,18 @@
-import * as api from "../api";
+import * as api from '../api';
+
+export const FETCH_ALL = 'FETCH_ALL';
+export const CREATE_POST = 'CREATE_POST';
 
 export const getPosts = () => async (dispatch) => {
     try {
-        const { posts } = await api.fetchPosts();
+        // axios thuc hien request va nhan res tra ve
+        // parser tu json sang js type
+        // dua vao luu trong truong data
+        const { data } = await api.fetchPosts();
+        const posts = data;
+
         dispatch({
-            type: "FETCH_ALL",
+            type: FETCH_ALL,
             payload: posts,
         });
     } catch (error) {
@@ -16,7 +24,7 @@ export const createPost = (post) => async (dispatch) => {
     try {
         const { data } = await api.createPost(post);
         dispatch({
-            type: "CREATE_POST",
+            type: CREATE_POST,
             payload: data,
         });
     } catch (error) {
