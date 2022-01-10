@@ -2,7 +2,9 @@ import * as api from '../api';
 
 export const FETCH_ALL = 'FETCH_ALL';
 export const CREATE_POST = 'CREATE_POST';
-export const UPDATE_POST = 'UPDATE_POST'
+export const UPDATE_POST = 'UPDATE_POST';
+export const DELETE_POST = 'DELETE_POST';
+export const DELETE_ALL = 'DELETE_ALL';
 
 export const getPosts = () => async (dispatch) => {
     try {
@@ -42,5 +44,25 @@ export const updatePost = (id, post) => async (dispatch) => {
         });
     } catch (error) {
         console.log(error.message);
+    }
+};
+
+export const deletePost = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.deletePost(id);
+
+        if (data.success) {
+            dispatch({
+                type: DELETE_POST,
+                payload: id,
+            });
+        }
+    } catch (error) {
+        if (error.response) {
+            console.log(error.response.data);
+        } else {
+            // Lua mang
+            console.log(error.message);
+        }
     }
 };

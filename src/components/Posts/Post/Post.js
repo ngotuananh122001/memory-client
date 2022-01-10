@@ -13,10 +13,16 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
 
 import useStyles from './styles';
+import { useDispatch } from 'react-redux';
+import { deletePost } from '../../../actions/posts';
 
 const Post = ({ post, setCurrentId }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
+    const onClickDelBtn = () => {
+        dispatch(deletePost(post._id));
+    };
     return (
         <Card className={classes.card}>
             <CardMedia
@@ -39,7 +45,7 @@ const Post = ({ post, setCurrentId }) => {
                     size="small"
                     onClick={() => setCurrentId(post._id)}
                 >
-                    <MoreHorizIcon fontSize="default" />
+                    <MoreHorizIcon fontSize="medium" />
                 </Button>
             </div>
             <div className={classes.details}>
@@ -65,10 +71,10 @@ const Post = ({ post, setCurrentId }) => {
                 </Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-                <Button size="small" color="primary" onClick={() => {}}>
+                {/* <Button size="small" color="primary" onClick={() => {}}>
                     <ThumbUpAltIcon fontSize="small" /> Like {post.likeCount}{' '}
-                </Button>
-                <Button size="small" color="primary" onClick={() => {}}>
+                </Button> */}
+                <Button size="small" color="primary" onClick={onClickDelBtn}>
                     <DeleteIcon fontSize="small" /> Delete
                 </Button>
             </CardActions>

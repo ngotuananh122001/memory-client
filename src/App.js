@@ -1,64 +1,70 @@
-import { Container, AppBar, Typography, Grow, Grid } from '@material-ui/core';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Posts from './components/Posts/Posts';
-import Form from './components/Form/Form';
-import useStyles from './styles';
-import memories from './images/memories.png';
-import { useEffect, useState } from 'react';
-import { getPosts } from './actions/posts';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { checkAuthenticated } from './api';
+import Auth from './Pages/auth/Auth';
+import Home from './Pages/home/Home';
+import LadingPage from './Pages/LadingPage';
+import setAuthToken from './utils/configAxiosHeader';
 
 const App = () => {
-    const [currentId, setCurrentId] = useState(null);
-    const classes = useStyles();
     const dispatch = useDispatch();
 
-    // fetch all posts from server
     useEffect(() => {
-        dispatch(getPosts());
+        const loadUser = async () => {
+            // Get token from localStorage if having
+            const token = localStorage['TOKEN_NAME'];
+            if (token) {
+                setAuthToken(token);
+            }
+
+            // Request len server check token
+            // Neu token linh tinh -> xoa luon
+            try {
+                const { data } = await checkAuthenticated();
+                if (data.success) {
+                    dispatch({
+                        type: 'SET_AUTH',
+                        payload: {
+                            isAuthenticated: true,
+                            user: data.user,
+                        },
+                    });
+                }
+            } catch (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                } else {
+                    console.log(error);
+                }
+                localStorage.removeItem('TOKEN_NAME');
+                setAuthToken(null);
+                dispatch({
+                    type: 'SET_AUTH',
+                    payload: {
+                        isAuthenticated: false,
+                        user: null,
+                    },
+                });
+            }
+        };
+
+        loadUser();
     }, [dispatch]);
 
     return (
-        <Container maxWidth="lg">
-            <AppBar
-                className={classes.appBar}
-                position="static"
-                color="inherit"
-            >
-                <Typography
-                    className={classes.heading}
-                    variant="h2"
-                    align="center"
-                >
-                    Memories
-                </Typography>
-                <img
-                    className={classes.image}
-                    src={memories}
-                    alt="icon"
-                    height="60"
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<LadingPage />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="*" element={<div>Not found</div>} />
+                <Route path="/login" element={<Auth authType={'login'} />} />
+                <Route
+                    path="/register"
+                    element={<Auth authType={'register'} />}
                 />
-            </AppBar>
-            <Grow in>
-                <Container>
-                    <Grid
-                        container
-                        justify="space-between"
-                        alignItems="stretch"
-                        spacing={3}
-                    >
-                        <Grid item xs={12} sm={7}>
-                            <Posts setCurrentId={setCurrentId} />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <Form
-                                currentId={currentId}
-                                setCurrentId={setCurrentId}
-                            />
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Grow>
-        </Container>
+            </Routes>
+        </BrowserRouter>
     );
 };
 

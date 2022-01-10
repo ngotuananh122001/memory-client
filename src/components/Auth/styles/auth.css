@@ -1,0 +1,97 @@
+.auth-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.auth-section {
+    width: 400px;
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 20px 40px;
+}
+
+.auth-section h1 {
+    text-align: center;
+}
+
+.auth-section .form-control {
+    position: relative;
+    margin-top: 40px;
+}
+.auth-section .form-control input {
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #adadad;
+}
+
+.auth-section .form-control span {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    width: 0%;
+    border-bottom: 3px solid var(--success-color);
+    transition: 0.3s 0s;
+}
+
+/* Focus input */
+label {
+    display: none;
+}
+label.appear {
+    display: block;
+    position: absolute;
+    top: -15px;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 100;
+    color: #adadad;
+}
+
+.auth-section .form-control input:focus ~ span {
+    width: 100%;
+}
+
+/* Neu error */
+.auth-section .form-control.error input {
+    border-bottom: 3px solid var(--error-color);
+}
+.auth-section .form-control.error small {
+    color: var(--error-color);
+}
+
+.auth-section .btn-auth {
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    color: white;
+    background-color: var(--success-color);
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    margin: 25px 0;
+}
+
+.auth-section .btn-auth:hover {
+    filter: brightness(0.9);
+    cursor: pointer;
+}
+
+.auth-section .signup-link {
+    text-align: center;
+}
+
+.auth-section .signup-link a {
+    color: var(--success-color);
+    text-decoration: none;
+}
+
+.auth-section .signup-link a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
