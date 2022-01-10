@@ -2,7 +2,10 @@ import axios from 'axios';
 
 // using origin
 // const url = 'http://192.168.1.70:5000';
-const url = 'https://thawing-cliffs-92158.herokuapp.com';
+const url =
+    process.env.NODE_ENV !== 'production'
+        ? 'http://192.168.1.70:5000'
+        : 'https://thawing-cliffs-92158.herokuapp.com';
 
 // auth
 export const checkAuthenticated = () => axios.get(`${url}/auth`);
